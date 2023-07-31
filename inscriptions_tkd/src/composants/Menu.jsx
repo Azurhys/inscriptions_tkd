@@ -16,9 +16,9 @@ function Menu() {
                 </ul>
                 <ul className="navbar-nav ms-auto">    
                     <li className="nav-item ">
-                        <NavLink to="/panier" className={({isActive}) => {
+                        <NavLink to="/settings" className={({isActive}) => {
                             return isActive ? "nav-link active text-light" : "nav-link"
-                        }}>Panier</NavLink>
+                        }}>Paramètres</NavLink>
                     </li>
                 </ul>
             </nav>
