@@ -16,6 +16,7 @@ const Inscription = () => {
     const [portable1, setPortable1] = useState('');
     const [portable2, setPortable2] = useState('');
     const [age, setAge] = useState(0);
+    const [commentaire, setCommentaire] = useState("");
     const tarifs = {
         babyTaekwondo: {
           adhesionClub: 30,
@@ -77,7 +78,9 @@ const Inscription = () => {
         lienParente: '',
         numeroPortable: '',
       });
-    
+      const [paiements, setPaiements] = useState([]);
+      const [dobokPaiement, setDobokPaiement] = useState("");
+      const [dobokEcheance, setDobokEcheance] = useState("");
       const calculerMontantTotal = () => {
         const tarif = tarifs[trancheAge];
         let total = tarif.adhesionClub + tarif.licenceFFST + tarif.cours;
@@ -135,7 +138,23 @@ const Inscription = () => {
           } else {
             setTrancheAge('adosAdultes');
           }
-      }, [trancheAge, reductionFamille, hasReductionPassSport, dobokTaille, dateNaissance, age]);
+          const generateEcheanciers = () => {
+            const montantTotalPaiement = montantTotal - (dobokTaille ? dobokTailles.find((item) => item.taille === dobokTaille)?.prix || 0 : 0);
+            const montantSeptembre = montantTotalPaiement > 0 ? Math.ceil(montantTotalPaiement / 4) : 0;
+            const echeanciers = [];
+            for (let i = 0; i < 4; i++) {
+              const dateEcheance = new Date(2023, 8 + i, 1); // 1er septembre, 1er octobre, 1er novembre, 1er janvier
+              echeanciers.push({
+                mois: dateEcheance.toLocaleString("default", { month: "long" }),
+                montant: montantTotalPaiement > 0 ? (i === 3 ? montantTotalPaiement - montantSeptembre * 3 : montantSeptembre) : 0,
+                moyenPaiement: "",
+              });
+            }
+            setPaiements(echeanciers);
+          };
+      
+          generateEcheanciers();
+      }, [trancheAge, reductionFamille, hasReductionPassSport, dobokTaille, dateNaissance, age, montantTotal]);
 
     // Fonction pour calculer l'âge au 1er septembre 2023
     const calculateAge = (birthdate) => {
@@ -354,6 +373,61 @@ const Inscription = () => {
           <span>{montantTotal} €</span>
         </div>
       </div>
+      <div>
+        <h3>MODE DE PAIEMENT & ECHEANCIERS</h3>
+        {paiements.map((paiement) => (
+          <div key={paiement.mois}>
+            <label>{paiement.mois}:</label>
+            <span>{paiement.montant} €</span>
+            <select
+              value={paiement.moyenPaiement}
+              onChange={(e) => {
+                const updatedPaiements = paiements.map((p) =>
+                  p.mois === paiement.mois ? { ...p, moyenPaiement: e.target.value } : p
+                );
+                setPaiements(updatedPaiements);
+              }}
+            >
+              <option value="">Choisissez un moyen de paiement</option>
+              <option value="Espèces">Espèces</option>
+              <option value="Chèque">Chèque</option>
+              <option value="ANCV">ANCV</option>
+              <option value="Coupons-sport">Coupons-sport</option>
+              <option value="CB">CB</option>
+            </select>
+          </div>
+        ))}
+        <h5>Option achat Dobok à part</h5>
+        <div>
+          <label>Montant:</label>
+          <span>{dobokTaille ? dobokTailles.find((item) => item.taille === dobokTaille)?.prix : 0} €</span>
+        </div>
+        <div>
+          <label>Mode paiement:</label>
+          <select value={dobokPaiement} onChange={(e) => setDobokPaiement(e.target.value)}>
+            <option value="">Choisissez un moyen de paiement</option>
+            <option value="Espèces">Espèces</option>
+            <option value="Chèque">Chèque</option>
+            <option value="ANCV">ANCV</option>
+            <option value="Coupons-sport">Coupons-sport</option>
+            <option value="CB">CB</option>
+          </select>
+        </div>
+        <div>
+          <label>Échéance:</label>
+          <span>à régler en une seule fois en septembre</span>
+        </div>
+      </div>
+        <div>
+          <h3>COMMENTAIRES / NOTES</h3>
+          <textarea
+            value={commentaire}
+            onChange={(e) => setCommentaire(e.target.value)}
+            rows={6}
+            maxLength={3000}
+            placeholder="Ajouter un commentaire ou une note..."
+          />
+        </div>
         <button type="submit">Soumettre</button>
       </form>
     );
