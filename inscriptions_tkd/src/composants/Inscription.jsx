@@ -1,4 +1,5 @@
 import { useState, React, useEffect } from "react";
+import axios from "axios";
 
 const Inscription = () => {
     const [nom, setNom] = useState('');
@@ -174,19 +175,19 @@ const Inscription = () => {
       return age;
     };
   
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault();
-  
+    
       // Calcul de l'âge au 1er septembre 2023
       const age = calculateAge(dateNaissance);
-  
-      // Utilisez les valeurs des états ici pour faire ce que vous souhaitez avec les données du formulaire
-      console.log({
+    
+      // Créez un objet pour stocker toutes les données du formulaire
+      const formData = {
         nom,
         prenom,
         genre,
         dateNaissance,
-        age, // Utilisez cette variable pour obtenir l'âge calculé
+        age,
         poids,
         taille,
         adresse: {
@@ -200,25 +201,64 @@ const Inscription = () => {
         portable1,
         portable2,
         personne1,
-        personne2
-      });
-  
-      // Réinitialiser les champs du formulaire après la soumission
-      setNom('');
-      setPrenom('');
-      setGenre('');
-      setDateNaissance('');
-      setPoids('');
-      setTaille('');
-      setAdresse1('');
-      setAdresse2('');
-      setCodePostal('');
-      setVille('');
-      setEmail1('');
-      setEmail2('');
-      setPortable1('');
-      setPortable2('');
+        personne2,
+        trancheAge,
+        tarifs,
+        reductionFamille,
+        hasReductionPassSport,
+        dobokTaille,
+        montantTotal,
+        paiements,
+        dobokPaiement,
+        commentaire,
+        // ... (ajoutez les autres données ici)
+      };
+    
+      try {
+        // Utilisez Axios pour envoyer les données à la base de données Firebase
+        const response = await axios.post(`${import.meta.env.VITE_API}membres.json`, formData);
+    
+        // Vérifiez la réponse si nécessaire
+        console.log(response);
+    
+        // Réinitialiser les champs du formulaire après la soumission
+        setNom("");
+        setPrenom("");
+        setGenre("");
+        setDateNaissance("");
+        setPoids("");
+        setTaille("");
+        setAdresse1("");
+        setAdresse2("");
+        setCodePostal("");
+        setVille("");
+        setEmail1("");
+        setEmail2("");
+        setPortable1("");
+        setPortable2("");
+        setPersonne1({
+          nom: "",
+          prenom: "",
+          lienParente: "",
+          numeroPortable: "",
+        });
+        setPersonne2({
+          nom: "",
+          prenom: "",
+          lienParente: "",
+          numeroPortable: "",
+        });
+        setTrancheAge("enfants");
+        setReductionFamille(0);
+        setHasReductionPassSport(false);
+        setDobokTaille("");
+        setMontantTotal(0);
+        setCommentaire("");
+      } catch (error) {
+        console.error("Erreur lors de l'envoi des données:", error);
+      }
     };
+    
   
     return (
       <form onSubmit={handleSubmit}>
