@@ -18,6 +18,8 @@ const Inscription = () => {
     const [portable2, setPortable2] = useState('');
     const [age, setAge] = useState(0);
     const [commentaire, setCommentaire] = useState("");
+    const [nombreEcheances, setNombreEcheances] = useState(1);
+
     const tarifs = {
         babyTaekwondo: {
           adhesionClub: 30,
@@ -65,7 +67,13 @@ const Inscription = () => {
       const [hasReductionPassSport, setHasReductionPassSport] = useState(false);
       const [dobokTaille, setDobokTaille] = useState('');
       const [montantTotal, setMontantTotal] = useState(0);
-
+      const calculateMontantEcheance = () => {
+        if (nombreEcheances === 0) {
+          return 0;
+        }
+        return Math.ceil(montantTotal / nombreEcheances);
+      };
+      
     const [personne1, setPersonne1] = useState({
         nom: '',
         prenom: '',
@@ -414,29 +422,37 @@ const Inscription = () => {
         </div>
       </div>
       <div>
-        <h3>MODE DE PAIEMENT & ECHEANCIERS</h3>
-        {paiements.map((paiement) => (
-          <div key={paiement.mois}>
-            <label>{paiement.mois}:</label>
-            <span>{paiement.montant} €</span>
-            <select
-              value={paiement.moyenPaiement}
-              onChange={(e) => {
-                const updatedPaiements = paiements.map((p) =>
-                  p.mois === paiement.mois ? { ...p, moyenPaiement: e.target.value } : p
-                );
-                setPaiements(updatedPaiements);
-              }}
-            >
-              <option value="">Choisissez un moyen de paiement</option>
-              <option value="Espèces">Espèces</option>
-              <option value="Chèque">Chèque</option>
-              <option value="ANCV">ANCV</option>
-              <option value="Coupons-sport">Coupons-sport</option>
-              <option value="CB">CB</option>
+      <h3>MODE DE PAIEMENT & ECHEANCIERS</h3>
+          <div>
+            <label>Nombre d'échéances :</label>
+            <select value={nombreEcheances} onChange={(e) => setNombreEcheances(parseInt(e.target.value))}>
+              <option value="1">1 échéance</option>
+              <option value="2">2 échéances</option>
+              <option value="3">3 échéances</option>
+              <option value="4">4 échéances</option>
             </select>
           </div>
-        ))}
+          {Array.from({ length: nombreEcheances }).map((_, index) => (
+            <div key={index}>
+              <label>{paiements[index]?.mois}:</label>
+              <span>{calculateMontantEcheance()} €</span>
+              <select
+                value={paiements[index]?.moyenPaiement}
+                onChange={(e) => {
+                  const updatedPaiements = [...paiements];
+                  updatedPaiements[index] = { ...updatedPaiements[index], moyenPaiement: e.target.value };
+                  setPaiements(updatedPaiements);
+                }}
+              >
+                <option value="">Choisissez un moyen de paiement</option>
+                <option value="Espèces">Espèces</option>
+                <option value="Chèque">Chèque</option>
+                <option value="ANCV">ANCV</option>
+                <option value="Coupons-sport">Coupons-sport</option>
+                <option value="CB">CB</option>
+              </select>
+            </div>
+          ))}
         <h5>Option achat Dobok à part</h5>
         <div>
           <label>Montant:</label>
@@ -452,10 +468,6 @@ const Inscription = () => {
             <option value="Coupons-sport">Coupons-sport</option>
             <option value="CB">CB</option>
           </select>
-        </div>
-        <div>
-          <label>Échéance:</label>
-          <span>à régler en une seule fois en septembre</span>
         </div>
       </div>
         <div>
