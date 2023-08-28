@@ -1,3 +1,4 @@
+// useMembres.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -14,9 +15,9 @@ const useMembres = () => {
       .catch(error => {
         console.error('Error fetching membres data:', error);
       });
-  }, []);
+  }, []); // Empty dependency array to fetch data only once
 
-  return membres;
+  return { membres, setMembres };
 };
 
 export default useMembres;
