@@ -3,6 +3,9 @@ import useMembres from '../hook/useMembres';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import ExcelJS from 'exceljs'
+import saveAs from 'file-saver'
+
 
 const Membres = () => {
   const { membres, setMembres } = useMembres();
@@ -69,7 +72,43 @@ const Membres = () => {
         console.error('Error deleting member:', error);
       });
   };
+  const exportToExcel = () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Membres');
 
+    // Add headers
+    const headers = ['Nom', 'Prénom', 'Age', 'Genre', 'Date de naissance', 'Poids', 'Taille', 'Adresse', 'Email 1', 'Email 2', 'Téléphone 1', 'Téléphone 2', 'Cours', 'Montant Inscription', 'Commentaire'];
+    worksheet.addRow(headers);
+
+    // Add member data rows
+    membres.forEach(membre => {
+      const row = [
+        membre.nom,
+        membre.prenom,
+        membre.age,
+        membre.genre,
+        membre.dateNaissance,
+        membre.poids,
+        membre.taille,
+        `${membre.adresse.adresse1} ${membre.adresse.adresse2} ${membre.adresse.codePostal} ${membre.adresse.ville}`,
+        membre.email1,
+        membre.email2,
+        membre.portable1,
+        membre.portable2,
+        membre.trancheAge,
+        membre.montantTotal,
+        membre.commentaire
+      ];
+      worksheet.addRow(row);
+    });
+
+    // Save the workbook to a file
+    const excelBuffer = workbook.xlsx.writeBuffer().then(buffer => {
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, 'membres.xlsx');
+    });
+  };
+  
   return (
     <div>
       <h1>Liste des Membres</h1>
@@ -341,6 +380,7 @@ const Membres = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <button className="btn btn-success mx-3" onClick={exportToExcel}>Exporter vers Excel</button>
     </div>
   );
 };
