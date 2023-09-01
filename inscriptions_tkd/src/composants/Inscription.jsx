@@ -1,5 +1,8 @@
 import { useState, React, useEffect } from "react";
 import axios from "axios";
+import PdfGenerator from "../PdfGenerator";
+import { saveAs } from 'file-saver';
+import { PDFViewer } from "@react-pdf/renderer";
 
 const Inscription = () => {
     const [nom, setNom] = useState('');
@@ -73,7 +76,8 @@ const Inscription = () => {
         }
         return Math.ceil(montantTotal / nombreEcheances);
       };
-      
+    
+
     const [personne1, setPersonne1] = useState({
         nom: '',
         prenom: '',
@@ -134,6 +138,50 @@ const Inscription = () => {
         setDobokTaille(e.target.value);
       };
 
+    
+      const handleDownloadPdf = async () => {
+        try {
+          const newFormData = {
+            nom,
+            prenom,
+            genre,
+            dateNaissance,
+            age,
+            poids,
+            taille,
+            adresse: {
+              adresse1,
+              adresse2,
+              codePostal,
+              ville,
+            },
+            email1,
+            email2,
+            portable1,
+            portable2,
+            personne1,
+            personne2,
+            trancheAge,
+            tarifs,
+            reductionFamille,
+            hasReductionPassSport,
+            dobokTaille,
+            montantTotal,
+            paiements,
+            dobokPaiement,
+            commentaire,
+            // ... (ajoutez les autres données ici)
+          };
+    
+          const pdfBlob = await PdfGenerator(formData).toBlob();
+
+            saveAs(pdfBlob, 'inscription.pdf');
+          } catch (error) {
+            console.error('Erreur lors de la génération du PDF:', error);
+          }
+        };
+    
+
       useEffect(() => {
         calculerMontantTotal();
         if (dateNaissance) {
@@ -182,13 +230,22 @@ const Inscription = () => {
   
       return age;
     };
-  
+    const [formData, setFormData] = useState(null);
+    const [showPdf, setShowPdf] = useState(false);
+
+    const handlePdfGeneration = () => {
+      setShowPdf(true);
+    };
+
     const handleSubmit = async (event) => {
       event.preventDefault();
     
       // Calcul de l'âge au 1er septembre 2023
       const age = calculateAge(dateNaissance);
     
+        // Mettez à jour formData avec les données du formulaire
+        
+        
       // Créez un objet pour stocker toutes les données du formulaire
       const formData = {
         nom,
@@ -269,6 +326,8 @@ const Inscription = () => {
     
   
     return (
+      <div>
+
       <form onSubmit={handleSubmit}>
         <h3>État Civil</h3>
         <div>
@@ -480,8 +539,25 @@ const Inscription = () => {
             placeholder="Ajouter un commentaire ou une note..."
           />
         </div>
-        <button type="submit">Soumettre</button>
+        <button type="submit" className="btn btn-success"> Soumettre </button>
+        
       </form>
+      <button onClick={handlePdfGeneration} className="btn btn-danger">Générer PDF</button>
+      
+      {showPdf && (
+      <div>
+        <button onClick={handleDownloadPdf} className="btn btn-primary">
+          Télécharger PDF
+        </button>
+        
+                <PDFViewer width='800px' height='600px'>
+                  <PdfGenerator />
+                </PDFViewer>
+             
+      
+                </div>)
+    }
+    </div>
     );
   };
  
