@@ -137,7 +137,46 @@ const Inscription = () => {
       const handleDobokTailleChange = (e) => {
         setDobokTaille(e.target.value);
       };
-
+      const generatePdf = () => {
+        // Créez un objet FormData avec les données du formulaire
+        const newFormData = {
+          nom,
+          prenom,
+          genre,
+          dateNaissance,
+          age,
+          poids,
+          taille,
+          adresse: {
+            adresse1,
+            adresse2,
+            codePostal,
+            ville,
+          },
+          email1,
+          email2,
+          portable1,
+          portable2,
+          personne1,
+          personne2,
+          trancheAge,
+          tarifs,
+          reductionFamille,
+          hasReductionPassSport,
+          dobokTaille,
+          montantTotal,
+          paiements,
+          dobokPaiement,
+          commentaire,
+          // ... (ajoutez les autres données ici)
+        };
+    
+        // Mettez à jour formData avec les données du formulaire
+        setFormData(newFormData);
+    
+        // Affichez le PDF dans le PDFViewer
+        setShowPdf(true);
+      };
     
       const handleDownloadPdf = async () => {
         try {
@@ -542,21 +581,16 @@ const Inscription = () => {
         <button type="submit" className="btn btn-success"> Soumettre </button>
         
       </form>
-      <button onClick={handlePdfGeneration} className="btn btn-danger">Générer PDF</button>
-      
+      <button onClick={generatePdf} className="btn btn-danger">
+        Générer PDF
+      </button>
       {showPdf && (
-      <div>
-        <button onClick={handleDownloadPdf} className="btn btn-primary">
-          Télécharger PDF
-        </button>
-        
-                <PDFViewer width='800px' height='600px'>
-                  <PdfGenerator />
-                </PDFViewer>
-             
-      
-                </div>)
-    }
+        <div>
+          <PDFViewer width="800" height="600">
+            <PdfGenerator formData={formData} />
+          </PDFViewer>
+        </div>
+      )}
     </div>
     );
   };
