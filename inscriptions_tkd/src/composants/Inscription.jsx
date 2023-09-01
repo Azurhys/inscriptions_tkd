@@ -138,6 +138,13 @@ const Inscription = () => {
         setDobokTaille(e.target.value);
       };
       const generatePdf = () => {
+        const paiementsArray = paiements.map((echeance, index) => ({
+          mois: echeance.mois,
+          montant: echeance.montant,
+          moyenPaiement: echeance.moyenPaiement,
+        }));
+
+        
         // Créez un objet FormData avec les données du formulaire
         const newFormData = {
           nom,
@@ -170,7 +177,7 @@ const Inscription = () => {
           commentaire,
           // ... (ajoutez les autres données ici)
         };
-    
+        newFormData.paiements = paiementsArray;
         // Mettez à jour formData avec les données du formulaire
         setFormData(newFormData);
     
@@ -220,6 +227,22 @@ const Inscription = () => {
           }
         };
     
+        const generateEcheanciers = () => {
+          const montantTotalPaiement = montantTotal - (dobokTaille ? dobokTailles.find((item) => item.taille === dobokTaille)?.prix || 0 : 0);
+          const montantSeptembre = montantTotalPaiement > 0 ? Math.ceil(montantTotalPaiement / nombreEcheances) : 0;
+          const echeanciers = [];
+        
+          for (let i = 0; i < nombreEcheances; i++) {
+            const dateEcheance = new Date(2023, 8 + i, 1); // 1er septembre, 1er octobre, 1er novembre, 1er janvier, etc.
+            echeanciers.push({
+              mois: dateEcheance.toLocaleString("default", { month: "long" }),
+              montant: i === nombreEcheances - 1 ? montantTotalPaiement - montantSeptembre * (nombreEcheances - 1) : montantSeptembre,
+              moyenPaiement: "",
+            });
+          }
+        
+          setPaiements(echeanciers);
+        };
 
       useEffect(() => {
         calculerMontantTotal();
@@ -234,23 +257,10 @@ const Inscription = () => {
           } else {
             setTrancheAge('adosAdultes');
           }
-          const generateEcheanciers = () => {
-            const montantTotalPaiement = montantTotal - (dobokTaille ? dobokTailles.find((item) => item.taille === dobokTaille)?.prix || 0 : 0);
-            const montantSeptembre = montantTotalPaiement > 0 ? Math.ceil(montantTotalPaiement / 4) : 0;
-            const echeanciers = [];
-            for (let i = 0; i < 4; i++) {
-              const dateEcheance = new Date(2023, 8 + i, 1); // 1er septembre, 1er octobre, 1er novembre, 1er janvier
-              echeanciers.push({
-                mois: dateEcheance.toLocaleString("default", { month: "long" }),
-                montant: montantTotalPaiement > 0 ? (i === 3 ? montantTotalPaiement - montantSeptembre * 3 : montantSeptembre) : 0,
-                moyenPaiement: "",
-              });
-            }
-            setPaiements(echeanciers);
-          };
-      
+          
+          
           generateEcheanciers();
-      }, [trancheAge, reductionFamille, hasReductionPassSport, dobokTaille, dateNaissance, age, montantTotal]);
+      }, [trancheAge, reductionFamille, hasReductionPassSport, dobokTaille, dateNaissance, age, montantTotal, nombreEcheances]);
 
     // Fonction pour calculer l'âge au 1er septembre 2023
     const calculateAge = (birthdate) => {
@@ -283,7 +293,11 @@ const Inscription = () => {
       const age = calculateAge(dateNaissance);
     
         // Mettez à jour formData avec les données du formulaire
-        
+        const paiementsArray = paiements.map((echeance, index) => ({
+          mois: echeance.mois,
+          montant: echeance.montant,
+          moyenPaiement: echeance.moyenPaiement,
+        }));
         
       // Créez un objet pour stocker toutes les données du formulaire
       const formData = {
@@ -317,7 +331,8 @@ const Inscription = () => {
         commentaire,
         // ... (ajoutez les autres données ici)
       };
-    
+      formData.paiements = paiementsArray;
+      
       try {
         // Utilisez Axios pour envoyer les données à la base de données Firebase
         const response = await axios.post(`${import.meta.env.VITE_API}membres.json`, formData);
