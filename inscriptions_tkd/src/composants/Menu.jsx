@@ -21,13 +21,7 @@ function Menu() {
                         }}>Membres</NavLink>
                     </li>
                 </ul>
-                <ul className="navbar-nav ms-auto">    
-                    <li className="nav-item ">
-                        <NavLink to="/settings" className={({isActive}) => {
-                            return isActive ? "nav-link active text-light" : "nav-link"
-                        }}>Paramètres</NavLink>
-                    </li>
-                </ul>
+                
             </nav>
         </div>
      );

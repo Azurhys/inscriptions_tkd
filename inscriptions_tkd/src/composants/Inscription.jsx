@@ -383,102 +383,102 @@ const Inscription = () => {
       <div>
 
       <form onSubmit={handleSubmit}>
-        <h3>État Civil</h3>
+        <h3 className="my-3">État Civil</h3>
         <div>
           <label>Nom de l'adhérent:</label>
-          <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} required />
+          <input className="form-control mb-3"  type="text" value={nom}  onChange={(e) => setNom(e.target.value)} required />
         </div>
         <div>
           <label>Prénom de l'adhérent:</label>
-          <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} required />
+          <input className="form-control mb-3"  type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} required />
         </div>
         <div>
           <label>Genre (H / F):</label>
-          <input type="text" value={genre} onChange={(e) => setGenre(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={genre} onChange={(e) => setGenre(e.target.value)} required />
         </div>
         <div>
           <label>Date de naissance (format ex. 25/12/2019):</label>
-          <input type="text" value={dateNaissance} onChange={(e) => setDateNaissance(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={dateNaissance} onChange={(e) => setDateNaissance(e.target.value)} required />
         </div>
         <div>
           <label>Poids (en Kg):</label>
-          <input type="number" value={poids} onChange={(e) => setPoids(e.target.value)} required />
+          <input className="form-control mb-3" type="number" value={poids} onChange={(e) => setPoids(e.target.value)} required />
         </div>
         <div>
           <label>Taille (en cm):</label>
-          <input type="number" value={taille} onChange={(e) => setTaille(e.target.value)} required />
+          <input className="form-control mb-3" type="number" value={taille} onChange={(e) => setTaille(e.target.value)} required />
         </div>
         <div>
           <label>Adresse domicile:</label>
-          <input type="text" value={adresse1} onChange={(e) => setAdresse1(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={adresse1} onChange={(e) => setAdresse1(e.target.value)} required />
         </div>
         <div>
           <label>Adresse 2:</label>
-          <input type="text" value={adresse2} onChange={(e) => setAdresse2(e.target.value)} />
+          <input className="form-control mb-3" type="text" value={adresse2} onChange={(e) => setAdresse2(e.target.value)} />
         </div>
         <div>
           <label>Code postal:</label>
-          <input type="text" value={codePostal} onChange={(e) => setCodePostal(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={codePostal} onChange={(e) => setCodePostal(e.target.value)} required />
         </div>
         <div>
           <label>Ville:</label>
-          <input type="text" value={ville} onChange={(e) => setVille(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={ville} onChange={(e) => setVille(e.target.value)} required />
         </div>
         <div>
           <label>Adresse mail 1:</label>
-          <input type="email" value={email1} onChange={(e) => setEmail1(e.target.value)} required />
+          <input className="form-control mb-3" type="email" value={email1} onChange={(e) => setEmail1(e.target.value)} required />
         </div>
         <div>
           <label>Adresse mail 2:</label>
-          <input type="email" value={email2} onChange={(e) => setEmail2(e.target.value)} />
+          <input className="form-control mb-3" type="email" value={email2} onChange={(e) => setEmail2(e.target.value)} />
         </div>
         <div>
           <label>N° portable 1 (format avec 06 ou 07):</label>
-          <input type="text" value={portable1} onChange={(e) => setPortable1(e.target.value)} required />
+          <input className="form-control mb-3" type="text" value={portable1} onChange={(e) => setPortable1(e.target.value)} required />
         </div>
         <div>
           <label>N° portable 2 (format avec 06 ou 07):</label>
-          <input type="text" value={portable2} onChange={(e) => setPortable2(e.target.value)} />
+          <input className="form-control mb-3" type="text" value={portable2} onChange={(e) => setPortable2(e.target.value)} />
         </div>
         <div>
-        <h3>PERSONNES A PREVENIR EN CAS D'URGENCE (pour les mineurs)</h3>
+        <h3 className="my-3">PERSONNES A PREVENIR EN CAS D'URGENCE (pour les mineurs)</h3>
         <div>
           <label>Personne n°1 - Nom:</label>
-          <input type="text" value={personne1.nom} onChange={(e) => setPersonne1({ ...personne1, nom: e.target.value })}  />
+          <input className="form-control mb-3" type="text" value={personne1.nom} onChange={(e) => setPersonne1({ ...personne1, nom: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°1 - Prénom:</label>
-          <input type="text" value={personne1.prenom} onChange={(e) => setPersonne1({ ...personne1, prenom: e.target.value })}  />
+          <input className="form-control mb-3" type="text" value={personne1.prenom} onChange={(e) => setPersonne1({ ...personne1, prenom: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°1 - Lien de parenté:</label>
-          <input type="text" value={personne1.lienParente} onChange={(e) => setPersonne1({ ...personne1, lienParente: e.target.value })}  />
+          <input className="form-control mb-3" type="text" value={personne1.lienParente} onChange={(e) => setPersonne1({ ...personne1, lienParente: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°1 - N° portable (format avec 06 ou 07):</label>
-          <input type="tel" pattern="[0-9]{10}" value={personne1.numeroPortable} onChange={(e) => setPersonne1({ ...personne1, numeroPortable: e.target.value })}  />
+          <input className="form-control mb-3" type="tel" pattern="[0-9]{10}" value={personne1.numeroPortable} onChange={(e) => setPersonne1({ ...personne1, numeroPortable: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°2 - Nom:</label>
-          <input type="text" value={personne2.nom} onChange={(e) => setPersonne2({ ...personne2, nom: e.target.value })}  />
+          <input className="form-control mb-3"  type="text" value={personne2.nom} onChange={(e) => setPersonne2({ ...personne2, nom: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°2 - Prénom:</label>
-          <input type="text" value={personne2.prenom} onChange={(e) => setPersonne2({ ...personne2, prenom: e.target.value })}  />
+          <input className="form-control mb-3" type="text" value={personne2.prenom} onChange={(e) => setPersonne2({ ...personne2, prenom: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°2 - Lien de parenté:</label>
-          <input type="text" value={personne2.lienParente} onChange={(e) => setPersonne2({ ...personne2, lienParente: e.target.value })}  />
+          <input className="form-control mb-3" type="text" value={personne2.lienParente} onChange={(e) => setPersonne2({ ...personne2, lienParente: e.target.value })}  />
         </div>
         <div>
           <label>Personne n°2 - N° portable (format avec 06 ou 07):</label>
-          <input type="tel" pattern="[0-9]{10}" value={personne2.numeroPortable} onChange={(e) => setPersonne2({ ...personne2, numeroPortable: e.target.value })}  />
+          <input className="form-control mb-3" type="tel" pattern="[0-9]{10}" value={personne2.numeroPortable} onChange={(e) => setPersonne2({ ...personne2, numeroPortable: e.target.value })}  />
         </div>
       </div>
       <div>
-        <h3>CALCUL DU MONTANT DE L'INSCRIPTION</h3>
+        <h3 className="my-3">CALCUL DU MONTANT DE L'INSCRIPTION</h3>
         <div>
-        <label>Tranches d'âge au moment de l'inscription:</label>
+        <label className="my-1">Tranches d'âge au moment de l'inscription:</label>
             <select value={trancheAge} onChange={handleTrancheAgeChange} disabled>
                 <option value="babyTaekwondo">4 ans - 5 ans - 6 ans</option>
                 <option value="enfants">7 - 8 - 9 - 10 - 11 ans</option>
@@ -486,20 +486,20 @@ const Inscription = () => {
             </select>
         </div>
         <div>
-          <label>Adhésion au club:</label>
+          <label className="my-1">Adhésion au club:</label>
           <span>{tarifs[trancheAge].adhesionClub} €</span>
         </div>
         <div>
-          <label>Licence fédérale FFST:</label>
+          <label className="my-1">Licence fédérale FFST:</label>
           <span>{tarifs[trancheAge].licenceFFST} €</span>
         </div>
         <div>
-          <label>Cours:</label>
+          <label className="my-1" >Cours:</label>
           <span>{tarifs[trancheAge].cours} €</span>
         </div>
         <div>
-          <label>Réduction "famille nombreuses":</label>
-          <select value={reductionFamille} onChange={handleReductionFamilleChange}>
+          <label className="my-1" >Réduction "famille nombreuses":</label>
+          <select className='form-control' value={reductionFamille} onChange={handleReductionFamilleChange}>
             <option value="0">Aucune réduction</option>
             {reductionsFamilleNombreuse.map((reduction) => (
               <option key={reduction.montant} value={reduction.montant}>
@@ -509,12 +509,12 @@ const Inscription = () => {
           </select>
         </div>
         <div>
-          <label>Réduction "PASS’ SPORT" (dispositif de la CAF):</label>
+          <label className="my-1">Réduction "PASS’ SPORT" (dispositif de la CAF):</label>
           <input type="checkbox" checked={hasReductionPassSport} onChange={handleReductionPassSportChange} />
         </div>
         <div>
-          <label>Achat Dobok</label>
-          <select value={dobokTaille} onChange={handleDobokTailleChange}>
+          <label className="my-1">Achat Dobok</label>
+          <select className='form-control' value={dobokTaille} onChange={handleDobokTailleChange}>
             <option value="">Sélectionner une taille</option>
             {dobokTailles.map((dobok) => (
               <option key={dobok.taille} value={dobok.taille}>
@@ -525,20 +525,20 @@ const Inscription = () => {
         </div>
         {dobokTaille && (
           <div>
-            <label>Prix du dobok:</label>
+            <label className="my-1">Prix du dobok:</label>
             <span>{dobokTailles.find((item) => item.taille === dobokTaille)?.prix} €</span>
           </div>
         )}
         <div>
-          <label>Montant total:</label>
+          <label className="my-1">Montant total:</label>
           <span>{montantTotal} €</span>
         </div>
       </div>
       <div>
-      <h3>MODE DE PAIEMENT & ECHEANCIERS</h3>
+      <h3 className="my-3">MODE DE PAIEMENT & ECHEANCIERS</h3>
           <div>
             <label>Nombre d'échéances :</label>
-            <select value={nombreEcheances} onChange={(e) => setNombreEcheances(parseInt(e.target.value))}>
+            <select className='form-control' value={nombreEcheances} onChange={(e) => setNombreEcheances(parseInt(e.target.value))}>
               <option value="1">1 échéance</option>
               <option value="2">2 échéances</option>
               <option value="3">3 échéances</option>
@@ -547,9 +547,10 @@ const Inscription = () => {
           </div>
           {Array.from({ length: nombreEcheances }).map((_, index) => (
             <div key={index}>
-              <label>{paiements[index]?.mois}:</label>
+              <label className="my-1">{paiements[index]?.mois}:</label>
               <span>{calculateMontantEcheance()} €</span>
               <select
+                className='form-control'
                 value={paiements[index]?.moyenPaiement}
                 onChange={(e) => {
                   const updatedPaiements = [...paiements];
@@ -566,14 +567,14 @@ const Inscription = () => {
               </select>
             </div>
           ))}
-        <h5>Option achat Dobok à part</h5>
+        {/* <h5 className="my-3">Option achat Dobok à part</h5>
         <div>
           <label>Montant:</label>
           <span>{dobokTaille ? dobokTailles.find((item) => item.taille === dobokTaille)?.prix : 0} €</span>
         </div>
         <div>
           <label>Mode paiement:</label>
-          <select value={dobokPaiement} onChange={(e) => setDobokPaiement(e.target.value)}>
+          <select className='form-control' value={dobokPaiement} onChange={(e) => setDobokPaiement(e.target.value)}>
             <option value="">Choisissez un moyen de paiement</option>
             <option value="Espèces">Espèces</option>
             <option value="Chèque">Chèque</option>
@@ -581,22 +582,23 @@ const Inscription = () => {
             <option value="Coupons-sport">Coupons-sport</option>
             <option value="CB">CB</option>
           </select>
-        </div>
+        </div> */}
       </div>
         <div>
-          <h3>COMMENTAIRES / NOTES</h3>
+          <h3 className="my-3">COMMENTAIRES / NOTES</h3>
           <textarea
             value={commentaire}
+            className="w-100 form-control"
             onChange={(e) => setCommentaire(e.target.value)}
             rows={6}
             maxLength={3000}
             placeholder="Ajouter un commentaire ou une note..."
           />
         </div>
-        <button type="submit" className="btn btn-success"> Soumettre </button>
+        <button type="submit" className="btn btn-success my-3"> Soumettre </button>
         
       </form>
-      <button onClick={generatePdf} className="btn btn-danger">
+      <button onClick={generatePdf} className="btn btn-danger mb-3">
         Générer PDF
       </button>
       {showPdf && (

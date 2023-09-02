@@ -77,7 +77,7 @@ const Membres = () => {
     const worksheet = workbook.addWorksheet('Membres');
 
     // Add headers
-    const headers = ['Nom', 'Prénom', 'Age', 'Genre', 'Date de naissance', 'Poids', 'Taille', 'Adresse', 'Email 1', 'Email 2', 'Téléphone 1', 'Téléphone 2', 'Cours', 'Montant Inscription', 'Commentaire'];
+    const headers = ['Nom', 'Prénom', 'Age', 'Genre', 'Date de naissance', 'Poids', 'Taille','Taille Dobok', 'Adresse', 'Email 1', 'Email 2', 'Téléphone 1', 'Téléphone 2', 'Cours', 'Montant Inscription', 'Commentaire'];
     worksheet.addRow(headers);
 
     // Add member data rows
@@ -90,6 +90,7 @@ const Membres = () => {
         membre.dateNaissance,
         membre.poids,
         membre.taille,
+        membre.dobokTaille,
         `${membre.adresse.adresse1} ${membre.adresse.adresse2} ${membre.adresse.codePostal} ${membre.adresse.ville}`,
         membre.email1,
         membre.email2,
@@ -97,7 +98,8 @@ const Membres = () => {
         membre.portable2,
         membre.trancheAge,
         membre.montantTotal,
-        membre.commentaire
+        membre.commentaire,
+        
       ];
       worksheet.addRow(row);
     });
