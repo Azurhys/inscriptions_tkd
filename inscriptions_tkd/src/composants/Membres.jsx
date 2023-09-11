@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useMembres from '../hook/useMembres';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import ExcelJS from 'exceljs'
 import saveAs from 'file-saver'
+import PdfGenerator from '../PdfGenerator';
+import { PDFViewer } from '@react-pdf/renderer';
 
 
 const Membres = () => {
@@ -13,6 +15,24 @@ const Membres = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false); // État pour gérer l'affichage de la modale de détails
   const [selectedMembre, setSelectedMembre] = useState(null); // État pour stocker les détails du membre sélectionné
   const [editedMembre, setEditedMembre] = useState(null); // État pour stocker les modifications du membre
+  const [showPdf, setShowPdf] = useState(false);
+  const [selectedPdfMembre, setSelectedPdfMembre] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // État pour la valeur de recherche
+  const [searchResults, setSearchResults] = useState([]); // État pour les résultats de la recherche
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
+  useEffect(() => {
+    // Filtrer les membres en fonction du terme de recherche
+    const filteredMembres = membres.filter((membre) =>
+      membre.nom.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSearchResults(filteredMembres);
+    setShowSearchResults(searchTerm !== ''); // Afficher les résultats de la recherche uniquement si le terme de recherche n'est pas vide
+  }, [searchTerm, membres]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const openEditModal = (membre) => {
     setSelectedMembre(membre);
@@ -110,11 +130,79 @@ const Membres = () => {
       saveAs(blob, 'membres.xlsx');
     });
   };
+  const generatePdf = (membre) => {
+    setSelectedPdfMembre(membre);
+  };
   
+
   return (
     <div>
-      <h1>Liste des Membres</h1>
-      <table className="table table-striped">
+      <h1 className='mb-3'>Liste des Membres</h1>
+
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Rechercher par nom de famille"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+      {showSearchResults ? (
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Cours</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchResults.map((membre) => (
+              <tr key={membre.id}>
+                <td>{membre.nom}</td>
+                  <td>{membre.prenom}</td>
+                  <td>{membre.trancheAge}</td>
+                  <td>
+                    <button className="btn btn-warning mx-3" onClick={() => openEditModal(membre)}>Modifier</button>
+                    <button className="btn btn-info mx-3" onClick={() => openDetailsModal(membre)}>Détails</button>
+                    <button className="btn btn-danger mx-3" onClick={() => handleDelete(membre.id)}>Supprimer</button>
+                    <button onClick={() => generatePdf(membre)} className="btn btn-danger mx-3"> Générer PDF </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        // Afficher la table des membres si la recherche n'est pas en cours
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Cours</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {membres.map((membre) => (
+              <tr key={membre.id}>
+                <td>{membre.nom}</td>
+                <td>{membre.prenom}</td>
+                <td>{membre.trancheAge}</td>
+                <td>
+                  <button className="btn btn-warning mx-3" onClick={() => openEditModal(membre)}>Modifier</button>
+                  <button className="btn btn-info mx-3" onClick={() => openDetailsModal(membre)}>Détails</button>
+                  <button className="btn btn-danger mx-3" onClick={() => handleDelete(membre.id)}>Supprimer</button>
+                  <button onClick={() => generatePdf(membre)} className="btn btn-danger mx-3"> Générer PDF </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {/* <table className="table table-striped">
         <thead>
           <tr>
             <th>Nom</th>
@@ -133,11 +221,12 @@ const Membres = () => {
                 <button className="btn btn-warning mx-3" onClick={() => openEditModal(membre)}>Modifier</button>
                 <button className="btn btn-info mx-3" onClick={() => openDetailsModal(membre)}>Détails</button>
                 <button className="btn btn-danger mx-3" onClick={() => handleDelete(membre.id)}>Supprimer</button>
+                <button onClick={() => generatePdf(membre)} className="btn btn-danger mx-3"> Générer PDF </button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
 
       {/* Modale de modification */}
       <Modal show={showEditModal} onHide={closeModal}>
@@ -235,7 +324,7 @@ const Membres = () => {
                   onChange={(e) =>
                     handleEditFieldChange("adresse2", {
                       ...editedMembre.adresse,
-                      adresse1: e.target.value,
+                      adresse2: e.target.value,
                     })
                   }
                 />
@@ -247,7 +336,7 @@ const Membres = () => {
                   onChange={(e) =>
                     handleEditFieldChange("codePostal", {
                       ...editedMembre.adresse,
-                      adresse1: e.target.value,
+                      codePostal: e.target.value,
                     })
                   }
                 />
@@ -259,7 +348,7 @@ const Membres = () => {
                   onChange={(e) =>
                     handleEditFieldChange("ville", {
                       ...editedMembre.adresse,
-                      adresse1: e.target.value,
+                      ville: e.target.value,
                     })
                   }
                 />
@@ -382,7 +471,15 @@ const Membres = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <button className="btn btn-success mx-3" onClick={exportToExcel}>Exporter vers Excel</button>
+      <button className="btn btn-success mx-3 mb-3" onClick={exportToExcel}>Exporter vers Excel</button>
+      {selectedPdfMembre && (
+        <div>
+          <PDFViewer width="1200" height="600">
+            <PdfGenerator formData={selectedPdfMembre} />
+          </PDFViewer>
+        </div>
+      )}
+
     </div>
   );
 };
