@@ -322,7 +322,7 @@ const Membres = () => {
                   className="form-control"
                   value={editedMembre.adresse.adresse2}
                   onChange={(e) =>
-                    handleEditFieldChange("adresse2", {
+                    handleEditFieldChange("adresse", {
                       ...editedMembre.adresse,
                       adresse2: e.target.value,
                     })
@@ -334,7 +334,7 @@ const Membres = () => {
                   className="form-control"
                   value={editedMembre.adresse.codePostal}
                   onChange={(e) =>
-                    handleEditFieldChange("codePostal", {
+                    handleEditFieldChange("adresse", {
                       ...editedMembre.adresse,
                       codePostal: e.target.value,
                     })
@@ -346,7 +346,7 @@ const Membres = () => {
                   className="form-control"
                   value={editedMembre.adresse.ville}
                   onChange={(e) =>
-                    handleEditFieldChange("ville", {
+                    handleEditFieldChange("adresse", {
                       ...editedMembre.adresse,
                       ville: e.target.value,
                     })

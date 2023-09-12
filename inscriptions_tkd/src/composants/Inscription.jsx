@@ -250,7 +250,7 @@ const Inscription = () => {
             const calculatedAge = calculateAge(dateNaissance);
             setAge(calculatedAge);
           };
-          if (age >= 4 && age <= 6) {
+          if (age >= 3 && age <= 6) {
             setTrancheAge('babyTaekwondo');
           } else if (age >= 7 && age <= 11) {
             setTrancheAge('enfants');
