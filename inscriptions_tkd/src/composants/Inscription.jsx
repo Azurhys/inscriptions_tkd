@@ -106,10 +106,6 @@ const Inscription = () => {
           total -= reductionPassSport;
         }
     
-        if (dobokTaille) {
-          const dobokPrix = dobokTailles.find((item) => item.taille === dobokTaille)?.prix || 0;
-          total += dobokPrix;
-        }
     
         setMontantTotal(total);
       };

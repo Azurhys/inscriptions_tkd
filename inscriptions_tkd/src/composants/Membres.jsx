@@ -57,6 +57,16 @@ const Membres = () => {
   };
 
   const handleEditSubmit = () => {
+    const nouveauMontantTotal = editedMembre.paiements.reduce(
+      (total, paiement) => total + parseFloat(paiement.montant || 0),
+      0
+    );
+  
+    // Créez une copie mise à jour du membre avec les modifications
+    const updatedMembre = {
+      ...editedMembre,
+      montantTotal: nouveauMontantTotal,
+    };
     // Envoyez les modifications à votre backend ou faites les traitements nécessaires
     console.log("Modifications à envoyer:", editedMembre);
     axios.put(`${import.meta.env.VITE_API}membres/${editedMembre.id}.json`, editedMembre)
@@ -132,6 +142,17 @@ const Membres = () => {
   };
   const generatePdf = (membre) => {
     setSelectedPdfMembre(membre);
+  };
+  const handleEditPaiementMonthChange = (index, value) => {
+    const updatedPaiements = [...editedMembre.paiements];
+    updatedPaiements[index].mois = value;
+    setEditedMembre({ ...editedMembre, paiements: updatedPaiements });
+  };
+  
+  const handleEditPaiementMontantChange = (index, value) => {
+    const updatedPaiements = [...editedMembre.paiements];
+    updatedPaiements[index].montant = value;
+    setEditedMembre({ ...editedMembre, paiements: updatedPaiements });
   };
   
 
@@ -411,6 +432,28 @@ const Membres = () => {
                   }
                 />
               </div>
+              <div className="form-group">
+                <label>Échéances:</label>
+                {editedMembre.paiements.map((paiement, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      className="form-control mb-3"
+                      placeholder={`Mois ${index + 1}`}
+                      value={paiement.mois}
+                      onChange={(e) => handleEditPaiementMonthChange(index, e.target.value)}
+                    />
+                    <input
+                      type="number"
+                      className="form-control mb-3"
+                      placeholder={`Montant ${index + 1}`}
+                      value={paiement.montant}
+                      onChange={(e) => handleEditPaiementMontantChange(index, e.target.value)}
+                    />
+                  </div>
+                ))}
+              </div>
+      
               <div className="form-group">
                 <label>Commentaire:</label>
                 <textarea

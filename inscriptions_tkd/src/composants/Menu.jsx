@@ -5,7 +5,7 @@ function Menu() {
         <div className="bg-dark mb-3">
             <nav className="navbar navbar-expand navbar-dark container">
                 <span className="navbar-brand fs-3">
-                    Inscriptions TKD
+                    Inscriptions TKD - v1.1
                 </span>
                 <ul className="navbar-nav">
                     <li className="nav-item">

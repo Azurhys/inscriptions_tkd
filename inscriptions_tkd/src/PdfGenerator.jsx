@@ -1,6 +1,31 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
+function calculateDobokPrice(formData) {
+  const dobokTailles = [
+    { taille: '100 cm', prix: 20 },
+    { taille: '110 cm', prix: 20 },
+    { taille: '120 cm', prix: 22 },
+    { taille: '130 cm', prix: 24 },
+    { taille: '140 cm', prix: 24 },
+    { taille: '150 cm', prix: 26 },
+    { taille: '160 cm', prix: 28 },
+    { taille: '170 cm', prix: 30 },
+    { taille: '180 cm', prix: 32 },
+    { taille: '190 cm', prix: 34 },
+  ];
+
+  const selectedSize = formData.dobokTaille;
+  const sizeData = dobokTailles.find(item => item.taille === selectedSize);
+  
+  if (sizeData) {
+    return sizeData.prix;
+  }
+
+  // Retournez un prix par défaut si la taille n'est pas trouvée
+  return 0;
+}
+
 
 const PdfGenerator = ({formData}) => (
   
@@ -69,8 +94,8 @@ const PdfGenerator = ({formData}) => (
                  <View style={styles.colContainer}>
                   <View style={styles.contactContainer}>
                     <Text style={styles.bodyText}> Réduction Famille Nombreuse : {formData.reductionFamille} €</Text>
-                    <Text style={styles.bodyText}> Réduction « PASS’ SPORT » de 50€ : {formData.hasReductionPassSport} </Text>
-                    <Text style={styles.bodyText}> Dobok : {formData.dobokTaille} </Text> 
+                    <Text style={styles.bodyText}> Réduction « PASS’ SPORT » de 50€ : {formData.hasReductionPassSport ? 'Oui' : 'Non'} </Text>
+                    <Text style={styles.bodyText}> Dobok : {formData.dobokTaille} - Prix : {calculateDobokPrice(formData)} €</Text> 
                     <Text style={styles.prix}> Montant total : {formData.montantTotal} €</Text>
                   </View>
                 </View> 
